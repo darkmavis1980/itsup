@@ -3,12 +3,14 @@
     {
       "url": "https://microsoft.com/",
       "method": "HEAD",
-      "cron": "*/1 * * * * *"
+      "cron": "*/1 * * * * *",
+      "key": "microsoft-homepage"
     },
     {
       "url": "https://google.com/",
       "method": "GET",
-      "cron": "*/5 * * * * *"
+      "cron": "*/5 * * * * *",
+      "key": "google-homepage"
     }
   ]
 }

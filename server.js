@@ -6,9 +6,8 @@ const cors = require('cors');
 const http = require('http').Server(app);
 const helmet = require('helmet');
 const morgan = require('morgan');
-const axios = require('axios');
-const { CronJob } = require('cron');
-const { jobs } = require('./jobs.json');
+require('dotenv').config();
+const { initJobs } = require('./services/jobs');
 
 const {
   NODE_ENV: nodeEnv = 'dev',
@@ -41,24 +40,17 @@ app.get(API_BASE+'/version', (req, res) => {
   res.json(data);
 });
 
-jobs.forEach(({method, url, cron}) => {
-  console.log('starting cron for ', url);
-  const jobInstance = new CronJob(
-    cron,
-    async () => {
-      try {
-        const {status} = await axios[method.toLowerCase()](url);
-        console.log(url, status);
-      } catch (error) {
-        console.log('failed', error.response.status);
-      }
-    },
-    null,
-    true,
-    'America/Los_Angeles'
-  );
-  jobInstance.start();
-})
+/**
+ * Start jobs
+ */
+initJobs();
+
+/**
+ * Routes
+ */
+const jobsRouter = require('./routes/jobs')(app, express);
+
+app.use(API_BASE, jobsRouter);
 
 // var job = new CronJob(
 // 	'* * * * * *',

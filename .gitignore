@@ -1,3 +1,5 @@
 node_modules/
 jobs.json
 .data
+.env*
+!.env*.sample
