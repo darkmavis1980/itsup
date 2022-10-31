@@ -42,22 +42,22 @@ app.get(API_BASE+'/version', (req, res) => {
 });
 
 jobs.forEach(({method, url, cron}) => {
-  try {
-    console.log('starting cron for ', url);
-    const jobInstance = new CronJob(
-      cron,
-      async () => {
+  console.log('starting cron for ', url);
+  const jobInstance = new CronJob(
+    cron,
+    async () => {
+      try {
         const {status} = await axios[method.toLowerCase()](url);
         console.log(url, status);
-      },
-      null,
-      true,
-      'America/Los_Angeles'
-    );
-    jobInstance.start();
-  } catch (error) {
-    console.log('failed', error.response.status);
-  }
+      } catch (error) {
+        console.log('failed', error.response.status);
+      }
+    },
+    null,
+    true,
+    'America/Los_Angeles'
+  );
+  jobInstance.start();
 })
 
 // var job = new CronJob(
