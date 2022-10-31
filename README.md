@@ -2,6 +2,11 @@
 
 Simple server to check if endpoints are up and running.
 
+## Requirements
+
+- Node.js 16+
+- Docker
+
 ## Setup
 
 ### Install dependencies
@@ -54,6 +59,20 @@ A full sample can be seen here:
 ```
 
 ## Run
+
+### Run MariaDB with Docker
+
+Run MariaDB with Docker by running:
+
+```sh
+docker-compose up -d
+```
+
+### Create the database
+
+To create the necessary table, please run the migration code that can be found in `/migrations` folder.
+
+### Run the server
 
 To start it in development mode please run:
 
