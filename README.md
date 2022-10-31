@@ -17,6 +17,10 @@ Install the node dependencies:
 npm install
 ```
 
+### Create .env
+
+Create a `.env` file, you can simply copy the `.env.sample` one, and default values will work with the configuration set in docker-compose.yml, but if you need to use a separate MariaDB instance, you will need to change that accordingly.
+
 ### Create configuration
 
 Set the list of endpoints to check by creating a `jobs.json`, and creating an `jobs` array, and each record should have the following object:
