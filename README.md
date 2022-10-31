@@ -67,6 +67,21 @@ To start it a production node process:
 npm start
 ```
 
+## Endpoints
+
+### Get list of jobs with latest status
+
+`GET /jobs` - Get the list of all the jobs with the most recent status
+
+### Get list of all jobs
+
+`GET /jobs/list` - Get the list of all the records for all jobs
+
+#### Params
+
+- `limit` - Set the limit of records, defaults to 100
+- `offset` - Set the offset of records, defaults to 0
+
 ## Resources
 
 - [Build a REST API with Node.js, Express, and MySQL](https://blog.logrocket.com/build-rest-api-node-express-mysql/)
