@@ -1,0 +1,14 @@
+version: '3'
+services:
+  db:
+    container_name: mariadb
+    image: mariadb
+    ports:
+      - 3306:3306
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: itsup
+      MARIADB_USER: itsup
+      MARIADB_PASSWORD: itsup
+    volumes:
+     - ./.data:/var/lib/mysql
