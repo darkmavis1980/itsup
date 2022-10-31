@@ -1,7 +1,12 @@
 const { execute } = require('../lib/db');
 
 const getJobsList = async (req, res) => {
-  const results = await execute('SELECT * FROM jobs_logs');
+  const {
+    limit = 100,
+    offset = 0,
+  } = req.query;
+  const sql = `SELECT * FROM jobs_logs LIMIT ${limit} OFFSET ${offset}`;
+  const results = await execute(sql);
   res.status(200).json(results).end();
 };
 
