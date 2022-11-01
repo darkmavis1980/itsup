@@ -1,4 +1,5 @@
 const { execute } = require('../lib/db');
+const Jobs = require('../classes/jobs');
 
 const getJobsList = async (req, res) => {
   const {
@@ -21,9 +22,30 @@ const getJobs = async (req, res) => {
     rows.push(row);
   }
   res.status(200).json(rows).end();
-}
+};
+
+const createJob = async (req, res) => {
+  const {
+    key,
+    cron,
+    url,
+    method = 'HEAD',
+  } = req.body;
+
+  const sql = `INSERT INTO jobs (name, cron, url, method) VALUES ('${key}', '${cron}', '${url}', '${method}')`;
+  const result = await execute(sql);
+  Jobs.addJob({
+    key,
+    cron,
+    url,
+    method,
+  });
+
+  res.status(200).json(result).end();
+};
 
 module.exports = {
   getJobsList,
   getJobs,
+  createJob,
 };

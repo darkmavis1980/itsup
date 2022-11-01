@@ -52,18 +52,6 @@ const jobsRouter = require('./routes/jobs')(app, express);
 
 app.use(API_BASE, jobsRouter);
 
-// var job = new CronJob(
-// 	'* * * * * *',
-// 	function() {
-// 		console.log('You will see this message every second');
-// 	},
-// 	null,
-// 	false,
-// 	'America/Los_Angeles'
-// );
-
-// job.start();
-
 /**
  * Start the server
  */
