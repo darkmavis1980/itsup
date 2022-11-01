@@ -7,7 +7,7 @@ const http = require('http').Server(app);
 const helmet = require('helmet');
 const morgan = require('morgan');
 require('dotenv').config();
-const { initJobs } = require('./services/jobs');
+const Jobs = require('./classes/jobs');
 
 const {
   NODE_ENV: nodeEnv = 'dev',
@@ -43,7 +43,7 @@ app.get(API_BASE+'/version', (req, res) => {
 /**
  * Start jobs
  */
-initJobs();
+Jobs.init();
 
 /**
  * Routes
@@ -51,18 +51,6 @@ initJobs();
 const jobsRouter = require('./routes/jobs')(app, express);
 
 app.use(API_BASE, jobsRouter);
-
-// var job = new CronJob(
-// 	'* * * * * *',
-// 	function() {
-// 		console.log('You will see this message every second');
-// 	},
-// 	null,
-// 	false,
-// 	'America/Los_Angeles'
-// );
-
-// job.start();
 
 /**
  * Start the server

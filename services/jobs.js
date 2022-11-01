@@ -1,39 +1,49 @@
-const axios = require('axios');
-const { CronJob } = require('cron');
-const { jobs } = require('../jobs.json');
-const { query } = require('../lib/db');
+const { execute } = require('../lib/db');
 
-const logJob = async (key, url, status) => {
-  const sql = `INSERT INTO jobs_logs (url, status, process_key) VALUES ('${url}', '${status}', '${key}')`;
-
-  const results = await query(sql);
-  return results;
-}
-
-const initJobs = async () => {
-  jobs.forEach(({method, url, cron, key}) => {
-    console.log('starting cron for ', url);
-    const jobInstance = new CronJob(
-      cron,
-      async () => {
-        try {
-          const {status} = await axios[method.toLowerCase()](url);
-          console.log(url, status);
-          await logJob(key, url, status);
-        } catch (error) {
-          console.log(error)
-          console.log('failed', error.response.status);
-          await logJob(key, url, error.response.status);
-        }
-      },
-      null,
-      true,
-      'America/Los_Angeles'
-    );
-    jobInstance.start();
-  });
+const list = async () => {
+  try {
+    const sql = `SELECT * FROM jobs`;
+    const results = await execute(sql);
+    return results;
+  } catch (error) {
+    console.log(`Could not fetch the jobs from DB, reason: ${error.message}`);
+  }
 };
 
+const create = async ({
+  key,
+  cron,
+  url,
+  method = 'HEAD',
+}) => {
+  try {
+    const sql = `INSERT INTO jobs (name, cron, url, method) VALUES ('${key}', '${cron}', '${url}', '${method}')`;
+    const result = await execute(sql);
+    return result;
+  } catch (error) {
+    console.log(error.message);
+    throw new Error(`Cannot save the ${key} job in the database`);
+  }
+};
+
+const update = async ({
+  id,
+  cron,
+  url,
+  method,
+}) => {
+  try {
+    const sql = `UPDATE jobs SET cron = '${cron}', url = '${url}', method = '${method}' WHERE id = ${id}`;
+    const result = await execute(sql);
+    return result;
+  } catch (error) {
+    console.log(error.message);
+    throw new Error(`Cannot update the job:${id} in the database`);
+  }
+}
+
 module.exports = {
-  initJobs,
+  list,
+  create,
+  update,
 }
