@@ -1,6 +1,6 @@
 const axios = require('axios');
 const { CronJob } = require('cron');
-const { query } = require('../lib/db');
+const { execute } = require('../lib/db');
 const JobsService = require('../services/jobs');
 const { jobs: JSONJobs } = require('../jobs.json');
 
@@ -20,7 +20,7 @@ class Jobs {
    */
   async logJob(key, url, status) {
     const sql = `INSERT INTO jobs_logs (url, status, process_key) VALUES ('${url}', '${status}', '${key}')`;
-    const results = await query(sql);
+    const results = await execute(sql);
     return results;
   }
 

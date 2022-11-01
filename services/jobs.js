@@ -10,6 +10,16 @@ const list = async () => {
   }
 };
 
+const getOne = async (id) => {
+  try {
+    const sql = `SELECT * FROM jobs WHERE id = ${id}`;
+    const results = await execute(sql);
+    return results[0];
+  } catch (error) {
+    console.log(`Could not fetch the jobs from DB, reason: ${error.message}`);
+  }
+};
+
 const create = async ({
   key,
   cron,
@@ -44,6 +54,7 @@ const update = async ({
 
 module.exports = {
   list,
+  getOne,
   create,
   update,
 }

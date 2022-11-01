@@ -1,7 +1,9 @@
-const { getJobsList, getJobs, createJob } = require('../controllers/jobs');
+const { getJobsList, getJobs, createJob, getJobById } = require('../controllers/jobs');
 
 module.exports = (app, express) => {
   let router = express.Router();
+
+  router.get('/jobs/:id', getJobById);
 
   router.get('/jobs/list', getJobsList);
 

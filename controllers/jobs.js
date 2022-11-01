@@ -25,6 +25,12 @@ const getJobs = async (req, res) => {
   res.status(200).json(rows).end();
 };
 
+const getJobById = async (req, res) => {
+  const { id } = req.params;
+  const job = await JobsService.getOne(id);
+  res.status(200).json(job).end();
+};
+
 const createJob = async (req, res) => {
   const {
     key,
@@ -76,4 +82,5 @@ module.exports = {
   getJobs,
   createJob,
   updateJob,
+  getJobById,
 };
