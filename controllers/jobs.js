@@ -1,13 +1,14 @@
 const { execute } = require('../lib/db');
 const Jobs = require('../classes/jobs');
+const JobsService = require('../services/jobs');
+const LogsService = require('../services/logs');
 
 const getJobsList = async (req, res) => {
   const {
     limit = 100,
     offset = 0,
   } = req.query;
-  const sql = `SELECT * FROM jobs_logs LIMIT ${limit} OFFSET ${offset}`;
-  const results = await execute(sql);
+  const results = await LogsService.list({limit, offset});
   res.status(200).json(results).end();
 };
 
@@ -32,10 +33,36 @@ const createJob = async (req, res) => {
     method = 'HEAD',
   } = req.body;
 
-  const sql = `INSERT INTO jobs (name, cron, url, method) VALUES ('${key}', '${cron}', '${url}', '${method}')`;
-  const result = await execute(sql);
+  // Create job in the DB
+  const result = JobsService.create({
+    key,
+    cron,
+    url,
+    method,
+  });
+
+  // Add Job to the cronJob scheduler
   Jobs.addJob({
     key,
+    cron,
+    url,
+    method,
+  });
+
+  res.status(200).json(result).end();
+};
+
+const updateJob = async (req, res) => {
+  const {
+    id,
+    cron,
+    url,
+    method = 'HEAD',
+  } = req.body;
+
+  // Create job in the DB
+  const result = JobsService.update({
+    id,
     cron,
     url,
     method,
@@ -48,4 +75,5 @@ module.exports = {
   getJobsList,
   getJobs,
   createJob,
+  updateJob,
 };

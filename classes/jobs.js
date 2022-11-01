@@ -1,6 +1,8 @@
 const axios = require('axios');
 const { CronJob } = require('cron');
-const { query, execute } = require('../lib/db');
+const { query } = require('../lib/db');
+const JobsService = require('../services/jobs');
+const { jobs: JSONJobs } = require('../jobs.json');
 
 class Jobs {
   jobs;
@@ -9,6 +11,13 @@ class Jobs {
     this.jobs = {}
   }
 
+  /**
+   * Logs a job status in the database
+   * @param {string} key A unique identifier for the job
+   * @param {string} url The url to test
+   * @param {string} status The HTTP status code of the response
+   * @returns The response from the DB
+   */
   async logJob(key, url, status) {
     const sql = `INSERT INTO jobs_logs (url, status, process_key) VALUES ('${url}', '${status}', '${key}')`;
     const results = await query(sql);
@@ -17,14 +26,36 @@ class Jobs {
 
   async load() {
     try {
-      const sql = `SELECT * FROM jobs`;
-      const results = await execute(sql);
+      const results = await JobsService.list();
       if (results.length > 0) {
         results.forEach(job => this.addJob(job));
       }
     } catch (error) {
-      console.error('Cannot load jobs');
+      console.error('Cannot load jobs from DB');
     }
+  }
+
+  loadJson() {
+    try {
+      if (JSONJobs) {
+        JSONJobs.forEach(job => this.addJob(job));
+      }
+    } catch (error) {
+      console.error('Cannot load jobs from static file');
+    }
+  }
+
+  init() {
+    /**
+     * Loading jobs saved in DB
+     */
+    this.load();
+
+    /**
+     * Deprecation Notice
+     * This will load jobs from a static file, but it will be phased out soon
+     */
+     this.loadJson();
   }
 
   async addJob({key, cron, url, method}) {
@@ -58,4 +89,6 @@ class Jobs {
   }
 }
 
-module.exports = new Jobs();
+const jobsInstance = new Jobs();
+
+module.exports = jobsInstance;
