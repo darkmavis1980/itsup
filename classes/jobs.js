@@ -1,14 +1,18 @@
 const axios = require('axios');
 const { CronJob } = require('cron');
-const { query } = require('../lib/db');
+const { execute } = require('../lib/db');
 const JobsService = require('../services/jobs');
 const { jobs: JSONJobs } = require('../jobs.json');
 
 class Jobs {
   jobs;
 
-  constructor() {
+  loadJsonOnStartup = false;
+
+  constructor(loadJsonOnStartup = false) {
     this.jobs = {}
+
+    this.loadJsonOnStartup = loadJsonOnStartup;
   }
 
   /**
@@ -20,7 +24,7 @@ class Jobs {
    */
   async logJob(key, url, status) {
     const sql = `INSERT INTO jobs_logs (url, status, process_key) VALUES ('${url}', '${status}', '${key}')`;
-    const results = await query(sql);
+    const results = await execute(sql);
     return results;
   }
 
@@ -28,7 +32,7 @@ class Jobs {
     try {
       const results = await JobsService.list();
       if (results.length > 0) {
-        results.forEach(job => this.addJob(job));
+        results.forEach(({name: key, cron, url, method}) => this.addJob({key, cron, url, method}));
       }
     } catch (error) {
       console.error('Cannot load jobs from DB');
@@ -55,19 +59,25 @@ class Jobs {
      * Deprecation Notice
      * This will load jobs from a static file, but it will be phased out soon
      */
-     this.loadJson();
+    if (this.loadJsonOnStartup) {
+      this.loadJson();
+    }
   }
 
   async addJob({key, cron, url, method}) {
+    if (this.jobs[key]) {
+      this.jobs[key].stop();
+      delete this.jobs[key];
+    }
     const jobInstance = new CronJob(
       cron,
       async () => {
         try {
           const {status} = await axios[method.toLowerCase()](url);
           await this.logJob(key, url, status);
-          console.log(`Pinged ${url} and got status ${status}`);
+          console.log(`key:${key} - Pinged ${url} and got status ${status}`);
         } catch (error) {
-          console.log(`Pinged ${url} and got status ${error.response.status}`);
+          console.log(`key:${key} - Pinged ${url} and got status ${error.response.status}`);
           await this.logJob(key, url, error.response.status);
         }
       },

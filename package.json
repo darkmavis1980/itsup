@@ -1,11 +1,12 @@
 {
   "name": "itsup",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "",
   "main": "server.js",
   "scripts": {
     "dev": "nodemon server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "create:db": "node ./install.js"
   },
   "keywords": [],
   "author": "",

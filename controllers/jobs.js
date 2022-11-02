@@ -25,6 +25,18 @@ const getJobs = async (req, res) => {
   res.status(200).json(rows).end();
 };
 
+const getJobById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const job = await JobsService.getOne(id);
+    if (!job) throw new Error('Cannot find the job');
+    res.status(200).json(job).end();
+  } catch (error) {
+    console.log(error.message);
+    res.status(404).end();
+  }
+};
+
 const createJob = async (req, res) => {
   const {
     key,
@@ -53,22 +65,41 @@ const createJob = async (req, res) => {
 };
 
 const updateJob = async (req, res) => {
-  const {
-    id,
-    cron,
-    url,
-    method = 'HEAD',
-  } = req.body;
+  try {
+    const { id } = req.params;
+    const {
+      key,
+      cron,
+      url,
+      method = 'HEAD',
+    } = req.body;
 
-  // Create job in the DB
-  const result = JobsService.update({
-    id,
-    cron,
-    url,
-    method,
-  });
+    const jobExists = await JobsService.getOneByKey(key);
+    if (!jobExists) {
+      throw new Error('Job does not exists');
+    }
 
-  res.status(200).json(result).end();
+    // Create job in the DB
+    const { affectedRows } = await JobsService.update({
+      id,
+      cron,
+      url,
+      method,
+    });
+
+    if (affectedRows === 0) throw new Error('Nothing to update');
+    // Replace Job to the cronJob scheduler
+    Jobs.addJob({
+      key,
+      cron,
+      url,
+      method,
+    });
+
+    res.status(204).end();
+  } catch (error) {
+    res.status(400).end();
+  }
 };
 
 module.exports = {
@@ -76,4 +107,5 @@ module.exports = {
   getJobs,
   createJob,
   updateJob,
+  getJobById,
 };
