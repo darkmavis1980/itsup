@@ -14,7 +14,10 @@ CREATE TABLE `jobs_logs` (
   `url` TEXT  NOT NULL,
   `status` VARCHAR(3) NOT NULL,
   `process_key` VARCHAR(255) NOT NULL,
+  `response_time` INT(11) NULL,
   `jobs_id` INT(11) NULL,
   FOREIGN KEY (jobs_id) REFERENCES jobs(id),
   PRIMARY KEY (`id`)
 );
+
+ALTER TABLE `jobs_logs` ADD `response_time` INT(11) NULL  AFTER `jobs_id`;
