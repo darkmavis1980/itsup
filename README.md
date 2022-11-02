@@ -74,7 +74,11 @@ docker-compose up -d
 
 ### Create the database
 
-To create the necessary table, please run the migration code that can be found in `/migrations` folder.
+To create the necessary tables, please run the migrations script:
+
+```sh
+npm run create:db
+```
 
 ### Run the server
 
@@ -94,7 +98,7 @@ npm start
 
 ### Get list of jobs with latest status
 
-`GET /jobs` - Get the list of all the jobs with the most recent status
+`GET /jobs/status` - Get the list of all the jobs with the most recent status
 
 ### Get list of all jobs
 

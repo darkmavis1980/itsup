@@ -26,9 +26,15 @@ const getJobs = async (req, res) => {
 };
 
 const getJobById = async (req, res) => {
-  const { id } = req.params;
-  const job = await JobsService.getOne(id);
-  res.status(200).json(job).end();
+  try {
+    const { id } = req.params;
+    const job = await JobsService.getOne(id);
+    if (!job) throw new Error('Cannot find the job');
+    res.status(200).json(job).end();
+  } catch (error) {
+    console.log(error.message);
+    res.status(404).end();
+  }
 };
 
 const createJob = async (req, res) => {
@@ -59,22 +65,33 @@ const createJob = async (req, res) => {
 };
 
 const updateJob = async (req, res) => {
+  const { id } = req.params;
   const {
-    id,
+    key,
     cron,
     url,
     method = 'HEAD',
   } = req.body;
 
   // Create job in the DB
-  const result = JobsService.update({
+  JobsService.update({
     id,
     cron,
     url,
     method,
   });
 
-  res.status(200).json(result).end();
+  // Replace Job to the cronJob scheduler
+  Jobs.addJob({
+    key,
+    cron,
+    url,
+    method,
+  });
+
+  console.log(Jobs.getJobs())
+
+  res.status(204).end();
 };
 
 module.exports = {

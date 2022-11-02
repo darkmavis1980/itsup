@@ -28,7 +28,7 @@ class Jobs {
     try {
       const results = await JobsService.list();
       if (results.length > 0) {
-        results.forEach(job => this.addJob(job));
+        results.forEach(({name: key, cron, url, method}) => this.addJob({key, cron, url, method}));
       }
     } catch (error) {
       console.error('Cannot load jobs from DB');
@@ -59,15 +59,19 @@ class Jobs {
   }
 
   async addJob({key, cron, url, method}) {
+    if (this.jobs[key]) {
+      this.jobs[key].stop();
+      delete this.jobs[key];
+    }
     const jobInstance = new CronJob(
       cron,
       async () => {
         try {
           const {status} = await axios[method.toLowerCase()](url);
           await this.logJob(key, url, status);
-          console.log(`Pinged ${url} and got status ${status}`);
+          console.log(`key:${key} - Pinged ${url} and got status ${status}`);
         } catch (error) {
-          console.log(`Pinged ${url} and got status ${error.response.status}`);
+          console.log(`key:${key} - Pinged ${url} and got status ${error.response.status}`);
           await this.logJob(key, url, error.response.status);
         }
       },
