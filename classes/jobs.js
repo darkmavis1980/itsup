@@ -4,6 +4,21 @@ const { execute } = require('../lib/db');
 const JobsService = require('../services/jobs');
 const { jobs: JSONJobs } = require('../jobs.json');
 
+axios.interceptors.request.use(config => {
+  config.meta = {
+    requestStartedAt: Number(Date.now())
+  };
+  return config;
+});
+
+axios.interceptors.response.use(config => {
+  config.meta = {
+    responseTime: Number(Date.now()) - config.config.meta.requestStartedAt
+  };
+  return config;
+});
+
+
 class Jobs {
   jobs;
 
@@ -22,8 +37,8 @@ class Jobs {
    * @param {string} status The HTTP status code of the response
    * @returns The response from the DB
    */
-  async logJob(key, url, status) {
-    const sql = `INSERT INTO jobs_logs (url, status, process_key) VALUES ('${url}', '${status}', '${key}')`;
+  async logJob(key, url, status, responseTime = 0) {
+    const sql = `INSERT INTO jobs_logs (url, status, process_key, response_time) VALUES ('${url}', '${status}', '${key}', ${responseTime})`;
     const results = await execute(sql);
     return results;
   }
@@ -73,12 +88,12 @@ class Jobs {
       cron,
       async () => {
         try {
-          const {status} = await axios[method.toLowerCase()](url);
-          await this.logJob(key, url, status);
-          console.log(`key:${key} - Pinged ${url} and got status ${status}`);
+          const {status, meta: { responseTime }} = await axios[method.toLowerCase()](url);
+          await this.logJob(key, url, status, responseTime);
+          console.log(`key:${key} - Pinged ${url} and got status ${status}, with response time of ${responseTime}ms`);
         } catch (error) {
-          console.log(`key:${key} - Pinged ${url} and got status ${error.response.status}`);
-          await this.logJob(key, url, error.response.status);
+          console.log(`key:${key} - Pinged ${url} and got status ${error.response.status}, with response time of ${responseTime}ms`);
+          await this.logJob(key, url, error.response.status, error.response.meta.responseTime);
         }
       },
       null,
