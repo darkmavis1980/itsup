@@ -7,8 +7,12 @@ const { jobs: JSONJobs } = require('../jobs.json');
 class Jobs {
   jobs;
 
-  constructor() {
+  loadJsonOnStartup = false;
+
+  constructor(loadJsonOnStartup = false) {
     this.jobs = {}
+
+    this.loadJsonOnStartup = loadJsonOnStartup;
   }
 
   /**
@@ -55,7 +59,9 @@ class Jobs {
      * Deprecation Notice
      * This will load jobs from a static file, but it will be phased out soon
      */
-     this.loadJson();
+    if (this.loadJsonOnStartup) {
+      this.loadJson();
+    }
   }
 
   async addJob({key, cron, url, method}) {

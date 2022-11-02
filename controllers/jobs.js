@@ -65,33 +65,41 @@ const createJob = async (req, res) => {
 };
 
 const updateJob = async (req, res) => {
-  const { id } = req.params;
-  const {
-    key,
-    cron,
-    url,
-    method = 'HEAD',
-  } = req.body;
+  try {
+    const { id } = req.params;
+    const {
+      key,
+      cron,
+      url,
+      method = 'HEAD',
+    } = req.body;
 
-  // Create job in the DB
-  JobsService.update({
-    id,
-    cron,
-    url,
-    method,
-  });
+    const jobExists = await JobsService.getOneByKey(key);
+    if (!jobExists) {
+      throw new Error('Job does not exists');
+    }
 
-  // Replace Job to the cronJob scheduler
-  Jobs.addJob({
-    key,
-    cron,
-    url,
-    method,
-  });
+    // Create job in the DB
+    const { affectedRows } = await JobsService.update({
+      id,
+      cron,
+      url,
+      method,
+    });
 
-  console.log(Jobs.getJobs())
+    if (affectedRows === 0) throw new Error('Nothing to update');
+    // Replace Job to the cronJob scheduler
+    Jobs.addJob({
+      key,
+      cron,
+      url,
+      method,
+    });
 
-  res.status(204).end();
+    res.status(204).end();
+  } catch (error) {
+    res.status(400).end();
+  }
 };
 
 module.exports = {
