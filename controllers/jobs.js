@@ -13,12 +13,11 @@ const getJobsList = async (req, res) => {
 };
 
 const getJobs = async (req, res) => {
-  const sql = 'SELECT DISTINCT(process_key) FROM `jobs_logs`';
-  const keys = await execute(sql);
+  const keys = await JobsService.list();
   let rowSql;
   const rows = [];
   for(let i = 0; i < keys.length; i++) {
-    rowSql = `SELECT * FROM jobs_logs WHERE process_key = '${keys[i].process_key}' ORDER BY created_at DESC LIMIT 1;`;
+    rowSql = `SELECT * FROM jobs_logs WHERE process_key = '${keys[i].name}' ORDER BY created_at DESC LIMIT 1;`;
     const [row] = await execute(rowSql);
     rows.push(row);
   }
@@ -39,22 +38,25 @@ const getJobById = async (req, res) => {
 
 const createJob = async (req, res) => {
   const {
-    key,
+    name: key,
     cron,
     url,
     method = 'HEAD',
   } = req.body;
 
   // Create job in the DB
-  const result = JobsService.create({
+  const result = await JobsService.create({
     key,
     cron,
     url,
     method,
   });
 
+  const { insertId } = result;
+
   // Add Job to the cronJob scheduler
-  Jobs.addJob({
+  await Jobs.addJob({
+    id: insertId,
     key,
     cron,
     url,
@@ -68,7 +70,7 @@ const updateJob = async (req, res) => {
   try {
     const { id } = req.params;
     const {
-      key,
+      name: key,
       cron,
       url,
       method = 'HEAD',
@@ -90,6 +92,7 @@ const updateJob = async (req, res) => {
     if (affectedRows === 0) throw new Error('Nothing to update');
     // Replace Job to the cronJob scheduler
     Jobs.addJob({
+      id,
       key,
       cron,
       url,
