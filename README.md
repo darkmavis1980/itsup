@@ -122,7 +122,7 @@ npm start
 
 Example:
 
-```json
+```jsonc
 // POST /jobs
 {
     "name": "dev-to",
@@ -146,7 +146,7 @@ Example:
 
 Example:
 
-```json
+```jsonc
 // PATCH /jobs/1
 {
     "name": "dev-to",
