@@ -4,6 +4,7 @@ const {
   createJob,
   getJobById,
   updateJob,
+  deleteJobById,
 } = require('../controllers/jobs');
 
 module.exports = (app, express) => {
@@ -16,6 +17,8 @@ module.exports = (app, express) => {
   router.get('/jobs/:id', getJobById);
 
   router.patch('/jobs/:id', updateJob);
+
+  router.delete('/jobs/:id', deleteJobById);
 
   router.post('/jobs', createJob);
 
