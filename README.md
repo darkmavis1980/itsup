@@ -104,10 +104,57 @@ npm start
 
 `GET /jobs/list` - Get the list of all the records for all jobs
 
-#### Params
+**Params:**
 
 - `limit` - Set the limit of records, defaults to 100
 - `offset` - Set the offset of records, defaults to 0
+
+### Create a new job
+
+`POST /jobs` - Create a new job in the database and add the related cronjob to the queue
+
+**Params:**
+
+- `name` - Name, or Key, to use to identify the job
+- `cron` - A cronjob string that can be generated [here](https://crontab.guru/).
+- `method` - The http method to use for the request
+- `url` - The url to test
+
+Example:
+
+```json
+// POST /jobs
+{
+    "name": "dev-to",
+    "cron": "*/5 * * * * *",
+    "method": "GET",
+    "url": "https://dev.to"
+}
+```
+
+### Update an existing job
+
+`PATCH /jobs/:id` - Update an existing job in the database and updates the related cronjob to the queue
+
+**Params:**
+
+- `id` - The ID of the job
+- `name` - Name, or Key, to use to identify the job
+- `cron` - A cronjob string that can be generated [here](https://crontab.guru/).
+- `method` - The http method to use for the request
+- `url` - The url to test
+
+Example:
+
+```json
+// PATCH /jobs/1
+{
+    "name": "dev-to",
+    "cron": "*/5 * * * * *",
+    "method": "GET",
+    "url": "https://dev.to"
+}
+```
 
 ## Resources
 
