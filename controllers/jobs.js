@@ -139,8 +139,15 @@ const updateJob = async (req, res) => {
 const deleteJobById = async (req, res) => {
   try {
     const { id } = req.params;
-    const job = await JobsService.deleteJob(id);
+    const job = await JobsService.getOne(id);
     if (!job) throw new Error('Cannot find the job');
+
+    // Delete the database entry
+    await JobsService.deleteJob(id);
+
+    // Delete the cronjob
+    Jobs.deleteJob(job.name);
+
     res.status(204).end();
   } catch (error) {
     console.log(error.message);
