@@ -164,6 +164,12 @@ Example:
 
 - `id` - The ID of the job
 
+## Roadmap
+
+- [X] Create basic endpoints for CRUD operations
+- [ ] Create CLI to handle installation/migrations
+- [ ] Create UI to see logs
+
 ## Resources
 
 - [Build a REST API with Node.js, Express, and MySQL](https://blog.logrocket.com/build-rest-api-node-express-mysql/)
