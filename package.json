@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon server.js",
     "start": "node server.js",
-    "create:db": "node ./install.js"
+    "create:db": "node ./bin/install.js",
+    "update:db": "node ./bin/update.js"
   },
   "keywords": [],
   "author": "",

@@ -1,9 +1,9 @@
 require('dotenv').config();
-require('./typedef');
+require('../typedef');
 const fs = require('fs/promises');
 const path = require('path');
-const { execute } = require('./lib/db');
-const JobsService = require('./services/jobs');
+const { execute } = require('../lib/db');
+const JobsService = require('../services/jobs');
 
 const MIGRATIONS_FOLDER = './migrations/';
 
