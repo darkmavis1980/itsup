@@ -2,43 +2,8 @@ require('dotenv').config();
 require('../typedef');
 const fs = require('fs/promises');
 const path = require('path');
-const { execute } = require('../lib/db');
 const JobsService = require('../services/jobs');
-
-const MIGRATIONS_FOLDER = './migrations/';
-
-/**
- * Query the database to see if the tables exists
- * @param {string} tableName The table to check
- * @returns {boolean} True if exists, false otherwise
- */
-const checkTableExists = async (tableName) => {
-  try {
-    const sql = `DESCRIBE ${tableName}`;
-    await execute(sql);
-    return true;
-  } catch (error) {
-    return false;
-  }
-};
-
-/**
- * Check a SQL file and tries to run a query against it's content
- * @param {string} fileName The SQL file to run
- * @returns {boolean} True regardless of the result
- */
-const runMigrations = async (fileName) => {
-  const filePath = path.resolve(__dirname, MIGRATIONS_FOLDER, fileName);
-  const fileData = await fs.readFile(filePath, { encoding: 'utf8'});
-  const queries = fileData.trim().split(';').map(query => query.trim());
-  for (const sql of queries) {
-    if (sql !== '') {
-      await execute(sql);
-    }
-  }
-  return true;
-};
-
+const { checkTableExists, runMigrations } = require('./lib/utils');
 /**
  * Save a job if doesn't exist in the database
  * @param {Job} Job Object
@@ -94,7 +59,7 @@ const init = async () => {
       throw new Error('Table jobs_logs already exists');
     }
     console.log('None found, creating tables in the DB');
-    const migrations = await fs.readdir(path.resolve(__dirname, MIGRATIONS_FOLDER));
+    const migrations = await getMigrationsFiles();
     for (const migration of migrations) {
       await runMigrations(migration);
     }
