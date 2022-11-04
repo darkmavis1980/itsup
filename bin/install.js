@@ -58,6 +58,11 @@ const init = async () => {
     if (await checkTableExists('jobs_logs')) {
       throw new Error('Table jobs_logs already exists');
     }
+
+    if (await checkTableExists('migrations')) {
+      throw new Error('Table migrations already exists');
+    }
+
     console.log('None found, creating tables in the DB');
     const migrations = await getMigrationsFiles();
     for (const migration of migrations) {
