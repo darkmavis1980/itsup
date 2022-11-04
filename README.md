@@ -94,6 +94,14 @@ To start it a production node process:
 npm start
 ```
 
+## Update the database
+
+You can run migrations via an npm script to keep your db up to date, just run the following:
+
+```sh
+npm run update:db
+```
+
 ## Endpoints
 
 ### Get list of jobs with latest status
@@ -163,6 +171,12 @@ Example:
 **Params:**
 
 - `id` - The ID of the job
+
+## Roadmap
+
+- [X] Create basic endpoints for CRUD operations
+- [ ] Create CLI to handle installation/migrations
+- [ ] Create UI to see logs
 
 ## Resources
 
