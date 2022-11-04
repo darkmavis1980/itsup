@@ -16,3 +16,4 @@ CREATE TABLE `migrations` (
 );
 
 INSERT INTO migrations (sequence) VALUES ('001');
+INSERT INTO migrations (sequence) VALUES ('002');
