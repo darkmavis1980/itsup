@@ -64,8 +64,10 @@ const update = async ({
   }
 };
 
-const deleteJob = async ({id}) => {
+const deleteJob = async (id) => {
   try {
+    const deleteRowsSql = `DELETE FROM jobs_logs WHERE jobs_id = ${id}`;
+    await execute(deleteRowsSql);
     const sql = `DELETE FROM jobs WHERE id = ${id}`;
     const result = await execute(sql);
     return result;

@@ -143,7 +143,8 @@ const deleteJobById = async (req, res) => {
     if (!job) throw new Error('Cannot find the job');
 
     // Delete the database entry
-    await JobsService.deleteJob(id);
+    const {affectedRows} = await JobsService.deleteJob(id);
+    if (affectedRows === 0) throw new Error('No record deleted');
 
     // Delete the cronjob
     Jobs.deleteJob(job.name);

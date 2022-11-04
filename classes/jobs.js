@@ -69,8 +69,11 @@ class Jobs {
           await this.logJob(id, key, url, status, responseTime);
           console.log(`key:${key} - Pinged ${url} and got status ${status}, with response time of ${responseTime}ms`);
         } catch (error) {
-          console.log(`key:${key} - Pinged ${url} and got status ${error.response.status}, with response time of ${responseTime}ms`);
-          await this.logJob(id, key, url, error.response.status, error.response.meta.responseTime);
+          if (error?.response?.meta && error?.response?.status) {
+            console.log(`key:${key} - Pinged ${url} and got status ${error?.response?.status}, with response time of ${responseTime}ms`);
+            return this.logJob(id, key, url, error?.response?.status, error?.response?.meta?.responseTime || 0);
+          }
+          console.log('Operation cancelled')
         }
       },
       null,
@@ -83,6 +86,7 @@ class Jobs {
   }
 
   deleteJob(key) {
+    this.jobs[key].stop();
     delete this.jobs[key];
   }
 
