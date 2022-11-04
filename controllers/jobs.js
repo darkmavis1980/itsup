@@ -1,8 +1,14 @@
 const { execute } = require('../lib/db');
+const express = require('express');
 const Jobs = require('../classes/jobs');
 const JobsService = require('../services/jobs');
 const LogsService = require('../services/logs');
 
+/**
+ * Get the list of jobs from the database
+ * @param {express.Request} req Request object
+ * @param {express.Response} res Response object
+ */
 const getJobsList = async (req, res) => {
   const {
     limit = 100,
@@ -12,6 +18,11 @@ const getJobsList = async (req, res) => {
   res.status(200).json(results).end();
 };
 
+/**
+ * Get the jobs with latest logs
+ * @param {express.Request} req Request object
+ * @param {express.Response} res Response object
+ */
 const getJobs = async (req, res) => {
   const keys = await JobsService.list();
   let rowSql;
@@ -24,6 +35,11 @@ const getJobs = async (req, res) => {
   res.status(200).json(rows).end();
 };
 
+/**
+ * Get a job by its ID
+ * @param {express.Request} req Request object
+ * @param {express.Response} res Response object
+ */
 const getJobById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -36,6 +52,11 @@ const getJobById = async (req, res) => {
   }
 };
 
+/**
+ * Creates a job in the database
+ * @param {express.Request} req Request object
+ * @param {express.Response} res Response object
+ */
 const createJob = async (req, res) => {
   const {
     name: key,
@@ -66,6 +87,11 @@ const createJob = async (req, res) => {
   res.status(200).json(result).end();
 };
 
+/**
+ * Updates a job in the database by its ID
+ * @param {express.Request} req Request object
+ * @param {express.Response} res Response object
+ */
 const updateJob = async (req, res) => {
   try {
     const { id } = req.params;
@@ -105,10 +131,36 @@ const updateJob = async (req, res) => {
   }
 };
 
+/**
+ * Deletes a job in the database by its ID
+ * @param {express.Request} req Request object
+ * @param {express.Response} res Response object
+ */
+const deleteJobById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const job = await JobsService.getOne(id);
+    if (!job) throw new Error('Cannot find the job');
+
+    // Delete the database entry
+    const {affectedRows} = await JobsService.deleteJob(id);
+    if (affectedRows === 0) throw new Error('No record deleted');
+
+    // Delete the cronjob
+    Jobs.deleteJob(job.name);
+
+    res.status(204).end();
+  } catch (error) {
+    console.log(error.message);
+    res.status(404).end();
+  }
+};
+
 module.exports = {
   getJobsList,
   getJobs,
   createJob,
   updateJob,
   getJobById,
+  deleteJobById,
 };

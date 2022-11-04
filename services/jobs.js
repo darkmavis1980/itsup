@@ -64,10 +64,23 @@ const update = async ({
   }
 };
 
+const deleteJob = async (id) => {
+  try {
+    const deleteRowsSql = `DELETE FROM jobs_logs WHERE jobs_id = ${id}`;
+    await execute(deleteRowsSql);
+    const sql = `DELETE FROM jobs WHERE id = ${id}`;
+    const result = await execute(sql);
+    return result;
+  } catch (error) {
+    throw new Error(`Cannot delete the job:${id} in the database`);
+  }
+}
+
 module.exports = {
   list,
   getOne,
   getOneByKey,
   create,
   update,
+  deleteJob,
 };

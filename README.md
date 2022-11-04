@@ -156,6 +156,14 @@ Example:
 }
 ```
 
+### Update an existing job
+
+`DELETE /jobs/:id` - Delete an existing job in the database and removes the related cronjob from the queue
+
+**Params:**
+
+- `id` - The ID of the job
+
 ## Resources
 
 - [Build a REST API with Node.js, Express, and MySQL](https://blog.logrocket.com/build-rest-api-node-express-mysql/)
