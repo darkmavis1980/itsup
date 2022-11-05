@@ -30,7 +30,7 @@ Set the list of endpoints to check by creating a `jobs.json`, and creating an `j
   "url": "https://microsoft.com/",
   "method": "HEAD",
   "cron": "*/1 * * * * *",
-  "key": "microsoft-homepage"
+  "name": "microsoft-homepage"
 }
 ```
 
@@ -50,13 +50,13 @@ A full sample can be seen here:
       "url": "https://microsoft.com/",
       "method": "HEAD",
       "cron": "*/1 * * * * *",
-      "key": "microsoft-homepage"
+      "name": "microsoft-homepage"
     },
     {
       "url": "https://google.com/",
       "method": "GET",
       "cron": "*/5 * * * * *",
-      "key": "google-homepage"
+      "name": "google-homepage"
     }
   ]
 }

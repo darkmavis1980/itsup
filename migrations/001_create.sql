@@ -19,5 +19,3 @@ CREATE TABLE `jobs_logs` (
   FOREIGN KEY (jobs_id) REFERENCES jobs(id),
   PRIMARY KEY (`id`)
 );
-
-ALTER TABLE `jobs_logs` ADD `response_time` INT(11) NULL  AFTER `jobs_id`;
