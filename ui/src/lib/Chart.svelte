@@ -30,7 +30,7 @@
   onMount(async() => {
     const response = await axios.get('/jobs/logs?timeframe=3h');
     data = {
-      labels: response.data.map(({created_at}) => dayjs(created_at).format('hh:mm:ss')),
+      labels: response.data.map(({created_at}) => dayjs(created_at).format('HH:mm:ss')),
       datasets: [{
         label: 'Response Time',
         fill: true,
