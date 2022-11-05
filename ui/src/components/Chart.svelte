@@ -3,6 +3,7 @@
   import dayjs from 'dayjs'
   import { Line } from 'svelte-chartjs'
   import { onMount } from 'svelte';
+  import { API_BASEURL } from '../config';
 
   import {
     Chart as ChartJS,
@@ -28,7 +29,7 @@
   let data;
 
   onMount(async() => {
-    const response = await axios.get('/jobs/logs?timeframe=3h');
+    const response = await axios.get(`${API_BASEURL}jobs/logs?timeframe=3h`);
     data = {
       labels: response.data.map(({created_at}) => dayjs(created_at).format('HH:mm:ss')),
       datasets: [{
