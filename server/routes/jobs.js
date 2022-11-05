@@ -25,6 +25,5 @@ module.exports = (app, express) => {
 
   router.post('/jobs', createJob);
 
-
   return router;
 };

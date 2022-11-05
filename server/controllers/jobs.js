@@ -14,8 +14,9 @@ const getJobsLogs = async (req, res) => {
     const {
       limit = 100,
       offset = 0,
+      timeframe = '1d',
     } = req.query;
-    const results = await LogsService.list({limit, offset});
+    const results = await LogsService.list({limit, offset, timeframe});
     res.status(200).json(results).end();
   } catch (error) {
     res.status(403).json({message: error.message}).end();
