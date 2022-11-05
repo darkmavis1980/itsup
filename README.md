@@ -108,9 +108,9 @@ npm run update:db
 
 `GET /jobs/status` - Get the list of all the jobs with the most recent status
 
-### Get list of all jobs
+### Get logs of all jobs
 
-`GET /jobs/list` - Get the list of all the records for all jobs
+`GET /jobs/logs` - Get the list of all the records for all jobs
 
 **Params:**
 

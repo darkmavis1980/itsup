@@ -1,6 +1,7 @@
 const {
-  getJobsList,
   getJobs,
+  getJobsLogs,
+  getJobsStatus,
   createJob,
   getJobById,
   updateJob,
@@ -10,9 +11,11 @@ const {
 module.exports = (app, express) => {
   let router = express.Router();
 
-  router.get('/jobs/list', getJobsList);
+  router.get('/jobs/', getJobs);
 
-  router.get('/jobs/status', getJobs);
+  router.get('/jobs/logs', getJobsLogs);
+
+  router.get('/jobs/status', getJobsStatus);
 
   router.get('/jobs/:id', getJobById);
 
