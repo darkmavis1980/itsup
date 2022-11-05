@@ -7,7 +7,7 @@ const http = require('http').Server(app);
 const helmet = require('helmet');
 const morgan = require('morgan');
 require('dotenv').config();
-const Jobs = require('./classes/jobs');
+const Jobs = require('./server/classes/jobs');
 
 const {
   NODE_ENV: nodeEnv = 'dev',
@@ -48,7 +48,7 @@ Jobs.init();
 /**
  * Routes
  */
-const jobsRouter = require('./routes/jobs')(app, express);
+const jobsRouter = require('./server/routes/jobs')(app, express);
 
 app.use(API_BASE, jobsRouter);
 

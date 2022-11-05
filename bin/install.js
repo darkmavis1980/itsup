@@ -2,7 +2,7 @@ require('dotenv').config();
 require('../typedef');
 const fs = require('fs/promises');
 const path = require('path');
-const JobsService = require('../services/jobs');
+const JobsService = require('../server/services/jobs');
 const { checkTableExists, runMigrations } = require('./lib/utils');
 /**
  * Save a job if doesn't exist in the database
