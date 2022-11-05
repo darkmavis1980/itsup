@@ -53,6 +53,12 @@ const jobsRouter = require('./server/routes/jobs')(app, express);
 app.use(API_BASE, jobsRouter);
 
 /**
+ * Set static files location
+ * used for requests that our frontend will make
+ */
+app.use('/ui/', express.static(__dirname + '/ui/dist'));
+
+/**
  * Start the server
  */
 http.listen(PORT, HOST, function(){
