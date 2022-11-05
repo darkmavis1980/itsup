@@ -6,7 +6,7 @@ const {
 const list = async ({
   limit = 100,
   offset = 0,
-  timeframe = '1d'
+  timeframe = '1d',
 }) => {
 
   const interval = getIntervalFromTimeframe(timeframe);
