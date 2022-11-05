@@ -58,33 +58,37 @@ const getJobById = async (req, res) => {
  * @param {express.Response} res Response object
  */
 const createJob = async (req, res) => {
-  const {
-    name: key,
-    cron,
-    url,
-    method = 'HEAD',
-  } = req.body;
+  try {
+    const {
+      name: key,
+      cron,
+      url,
+      method = 'HEAD',
+    } = req.body;
 
-  // Create job in the DB
-  const result = await JobsService.create({
-    key,
-    cron,
-    url,
-    method,
-  });
+    // Create job in the DB
+    const result = await JobsService.create({
+      key,
+      cron,
+      url,
+      method,
+    });
 
-  const { insertId } = result;
+    const { insertId } = result;
 
-  // Add Job to the cronJob scheduler
-  await Jobs.addJob({
-    id: insertId,
-    key,
-    cron,
-    url,
-    method,
-  });
+    // Add Job to the cronJob scheduler
+    await Jobs.addJob({
+      id: insertId,
+      key,
+      cron,
+      url,
+      method,
+    });
 
-  res.status(200).json(result).end();
+    res.status(200).json(result).end();
+  } catch (error) {
+    res.status(403).json({message: error.message}).end();
+  }
 };
 
 /**
