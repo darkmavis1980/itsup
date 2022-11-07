@@ -3,9 +3,10 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const http = require('http').Server(app);
+const { createServer } = require("http");
 const helmet = require('helmet');
 const morgan = require('morgan');
+const { Server } = require('socket.io');
 require('dotenv').config();
 const Jobs = require('./server/classes/jobs');
 
@@ -41,11 +42,6 @@ app.get(API_BASE+'/version', (req, res) => {
 });
 
 /**
- * Start jobs
- */
-Jobs.init();
-
-/**
  * Routes
  */
 const jobsRouter = require('./server/routes/jobs')(app, express);
@@ -58,10 +54,36 @@ app.use(API_BASE, jobsRouter);
  */
 app.use('/ui/', express.static(__dirname + '/ui/dist'));
 
+const httpServer = createServer(app);
+
+/**
+ * Websockets
+ */
+const io = new Server(httpServer, {
+  // path: '/ws',
+});
+
+Jobs.setIO(io);
+
+io.on('connection', (socket) => {
+  console.log('connected');
+  socket.emit('welcome-from-server', {
+    message: 'Hello!'
+  });
+  Jobs.setWebSocket(socket);
+});
+
+app.io = io;
+
+/**
+ * Start jobs
+ */
+Jobs.init();
+
 /**
  * Start the server
  */
-http.listen(PORT, HOST, function(){
+httpServer.listen(PORT, HOST, function(){
   console.log(`Server started at the address ${HOST}:${PORT}`);
 });
 
