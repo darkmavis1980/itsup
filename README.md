@@ -181,3 +181,4 @@ Example:
 ## Resources
 
 - [Build a REST API with Node.js, Express, and MySQL](https://blog.logrocket.com/build-rest-api-node-express-mysql/)
+- [NodeJS and closing your MySQL connections — a study](https://blog.devgenius.io/nodejs-how-to-close-your-mysql-connections-and-why-a7cc7287132b)
