@@ -1,4 +1,5 @@
+<script lang="ts">
+  import Chart from '../components/Chart.svelte';
+</script>
 
-
-<h1>Hello and welcome to my site!</h1>
-<a href="/about">About my site</a>
+<Chart />
