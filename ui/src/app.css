@@ -11,6 +11,22 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
   color: black;
+
+  /* palette https://coolors.co/palette/2b2d42-8d99ae-edf2f4-ef233c-d90429 */
+  --primary-color: #2b2d42;
+  --secondary-color: #8d99ae;
+  --background-color: #edf2f4;
+  --primary-accent: #ef233c;
+  --secondary-accent: #d90429;
+}
+
+[data-theme="dark"] {
+  /* palette https://coolors.co/palette/16697a-489fb5-82c0cc-ede7e3-ffa62b */
+  --primary-color: #16697a;
+  --secondary-color: #489fb5;
+  --background-color: #ede7e3;
+  --primary-accent: #82c0cc;
+  --secondary-accent: #ffa62b;
 }
 
 a {

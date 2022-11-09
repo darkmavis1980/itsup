@@ -1,9 +1,28 @@
 <script lang="ts">
   import axios from 'axios';
   import dayjs from 'dayjs'
+  import cronstrue from 'cronstrue';
+  import type { Job } from '../lib/interfaces/common';
   import { Line } from 'svelte-chartjs'
   import { onMount } from 'svelte';
-  import { API_BASEURL } from '../config';
+  import { API_BASEURL, chartColors } from '../config';
+  import { HexToRGB, RGBArrayToString } from '../lib/colours';
+
+  interface JobLog {
+    created_at: string;
+    response_time: string;
+    jobs_id: number;
+  }
+
+  interface ChartDataSet {
+    data: any;
+    [key: string]: any;
+  }
+
+  interface ChartData {
+    labels: string[];
+    datasets: ChartDataSet[];
+  }
 
   import {
     Chart as ChartJS,
@@ -26,23 +45,34 @@
     CategoryScale
   );
 
-  let data;
+  let data: ChartData;
+  let jobsList: [Job];
+
+  const charColor = RGBArrayToString(HexToRGB(chartColors[2]));
 
   onMount(async() => {
-    const response = await axios.get(`${API_BASEURL}jobs/logs?timeframe=3h`);
+    const { data: jobs } = await axios.get(`${API_BASEURL}jobs`);
+    jobsList = jobs.map((item: Job) => {
+      item.humanCron = cronstrue.toString(item.cron);
+      return item;
+    });
+
+    const response: {data: [JobLog]} = await axios.get(`${API_BASEURL}jobs/logs?timeframe=3h`);
     data = {
-      labels: response.data.map(({created_at}) => dayjs(created_at).format('HH:mm:ss')),
-      datasets: [{
+      labels: response.data.filter(point => point.jobs_id === jobsList[0].id).map(({created_at}) => dayjs(created_at).format('HH:mm:ss')),
+      datasets: jobsList.map((item, index) => {
+        const charColor = RGBArrayToString(HexToRGB(chartColors[index]));
+        return {
         label: 'Response Time',
         fill: true,
         lineTension: 0.3,
         backgroundColor: 'rgba(184, 185, 210, .3)',
-        borderColor: 'rgb(35, 26, 136)',
+        borderColor: charColor,
         borderCapStyle: 'butt',
         borderDash: [],
         borderDashOffset: 0.0,
         borderJoinStyle: 'miter',
-        pointBorderColor: 'rgb(35, 26, 136)',
+        pointBorderColor: charColor,
         pointBackgroundColor: 'rgb(255, 255, 255)',
         pointBorderWidth: 10,
         pointHoverRadius: 5,
@@ -51,12 +81,10 @@
         pointHoverBorderWidth: 1,
         pointRadius: 1,
         pointHitRadius: 10,
-        data: response.data.map(({response_time}) => response_time)
-      }]
+        data: response.data.filter(point => point.jobs_id === item.id).map(({response_time}) => response_time)
+      }}),
     }
-    
   });
-  console.log(data)
 </script>
 
 <div class="chart">

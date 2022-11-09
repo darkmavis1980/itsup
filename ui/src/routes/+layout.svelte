@@ -3,7 +3,7 @@
   import Nav from '../components/Nav.svelte';
 </script>
 
-<main id="app">
+<main id="app" data-theme="light">
   <Nav />
   <div class="content-wrapper">
     <slot />

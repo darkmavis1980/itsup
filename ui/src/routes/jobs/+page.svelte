@@ -10,7 +10,7 @@
 
   onMount(async () => {
     const { data } = await axios.get(`${API_BASEURL}jobs`);
-    jobs = data.map(item => {
+    jobs = data.map((item: Job) => {
       item.humanCron = cronstrue.toString(item.cron);
       return item;
     });
@@ -68,7 +68,7 @@
   }
 
   .styled-table thead tr th{
-    background-color: #009879;
+    background-color: var(--primary-color);
     color: #ffffff;
     text-align: left;
   }
@@ -95,7 +95,7 @@
   }
 
   .styled-table tbody tr:last-of-type {
-    border-bottom: 2px solid #009879;
+    border-bottom: 2px solid var(--primary-color);
   }
 
   /* .styled-table tbody tr.active-row {
