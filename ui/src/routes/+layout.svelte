@@ -3,8 +3,16 @@
   import Nav from '../components/Nav.svelte';
 </script>
 
-<Nav />
-
-<main>
-	<slot />
+<main id="app">
+  <Nav />
+  <div class="content-wrapper">
+    <slot />
+  </div>
 </main>
+
+<style>
+  .content-wrapper {
+    max-width: 1280px;
+    width: 100%;
+  }
+</style>
