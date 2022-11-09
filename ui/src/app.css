@@ -4,7 +4,6 @@
   line-height: 24px;
   font-weight: 400;
   color-scheme: light dark;
-  background-color: #FAFAFA;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -29,18 +28,46 @@
   --secondary-accent: #ffa62b;
 }
 
+[data-theme="dark-monochrome"] {
+  /* palette https://coolors.co/palette/22223b-4a4e69-9a8c98-c9ada7-f2e9e4 */
+  --primary-color: #22223b;
+  --secondary-color: #4a4e69;
+  --background-color: #f2e9e4;
+  --primary-accent: #9a8c98;
+  --secondary-accent: #c9ada7;
+}
+
+[data-theme="lime"] {
+  /* palette https://coolors.co/palette/007f5f-2b9348-55a630-80b918-aacc00-bfd200-d4d700-dddf00-eeef20-ffff3f */
+  --primary-color: #007f5f;
+  --secondary-color: #55a630;
+  --background-color: #f2e9e4;
+  --primary-accent: #aacc00;
+  --secondary-accent: #eeef20;
+}
+
+[data-theme="seaside"] {
+  /* palette https://www.canva.com/colors/color-palettes/summer-splash/ */
+  --primary-color: #05445E;
+  --secondary-color: #189AB4;
+  --background-color: #f2e9e4;
+  --primary-accent: #75E6DA;
+  --secondary-accent: #D4F1F4;
+}
+
 a {
   font-weight: 500;
-  color: #646cff;
+  color: var(--primary-accent);
   text-decoration: inherit;
 }
 
 a:hover {
-  color: #535bf2;
+  color: var(--secondary-accent);
 }
 
 body {
   margin: 0;
+  background-color: var(--background-color);
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
@@ -55,6 +82,7 @@ h1 {
   display: grid;
   grid-template-columns: 200px 1fr;
   grid-template-rows: auto;
+  height: 100%;
 }
 
 /* 

@@ -3,10 +3,12 @@
   import Nav from '../components/Nav.svelte';
 </script>
 
-<main id="app" data-theme="light">
+<main id="app" data-theme="default">
   <Nav />
   <div class="content-wrapper">
-    <slot />
+    <div class="content">
+      <slot />
+    </div>
   </div>
 </main>
 
@@ -14,5 +16,10 @@
   .content-wrapper {
     max-width: 1280px;
     width: 100%;
+    height: 100vh;
+  }
+
+  .content {
+    padding: 1rem;
   }
 </style>

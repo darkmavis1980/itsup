@@ -1,5 +1,5 @@
 // Converts any given HEX color to the relative RGB value
-export const HexToRGB = (hex: string) => {
+export const HexToRGB = (hex: string): number[] => {
   if (!hex || hex === null) {
     throw new Error('This is not a valid hex');
   }
@@ -18,4 +18,4 @@ export const HexToRGB = (hex: string) => {
   });
 };
 
-export const RGBArrayToString = (rgb: Array<string>) => `rgb(${rgb.join(', ')})`;
+export const RGBArrayToString = (rgb: Array<number>) => `rgb(${rgb.join(', ')})`;

@@ -48,8 +48,6 @@
   let data: ChartData;
   let jobsList: [Job];
 
-  const charColor = RGBArrayToString(HexToRGB(chartColors[2]));
-
   onMount(async() => {
     const { data: jobs } = await axios.get(`${API_BASEURL}jobs`);
     jobsList = jobs.map((item: Job) => {
@@ -63,7 +61,7 @@
       datasets: jobsList.map((item, index) => {
         const charColor = RGBArrayToString(HexToRGB(chartColors[index]));
         return {
-        label: 'Response Time',
+        label: item.name,
         fill: true,
         lineTension: 0.3,
         backgroundColor: 'rgba(184, 185, 210, .3)',
