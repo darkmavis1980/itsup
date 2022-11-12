@@ -8,3 +8,21 @@ export interface Job {
   humanCron?: string;
   method: HttpMethod;
 }
+
+export interface DropdownOptions {
+  value: string;
+  label: string;
+  selected?: boolean;
+}
+
+export interface StoreHomepage {
+  currentFrequency: string;
+}
+
+export interface InputEventTarget {
+  value: string | number;
+}
+
+export interface InputEvent {
+  target: InputEventTarget;
+}

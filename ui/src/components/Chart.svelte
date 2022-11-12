@@ -1,9 +1,10 @@
 <script lang="ts">
+  import { getContext } from 'svelte';
   import axios from 'axios';
   import dayjs from 'dayjs'
   import cronstrue from 'cronstrue';
   import type { Job } from '../lib/interfaces/common';
-  import { Line } from 'svelte-chartjs'
+  import { getElementAtEvent, Line } from 'svelte-chartjs'
   import { onMount } from 'svelte';
   import { API_BASEURL, chartColors } from '../config';
   import { HexToRGB, RGBArrayToString } from '../lib/colours';
@@ -48,6 +49,8 @@
   let data: ChartData;
   let jobsList: [Job];
 
+  const homepageStore = getContext('homepage');
+
   onMount(async() => {
     const { data: jobs } = await axios.get(`${API_BASEURL}jobs`);
     jobsList = jobs.map((item: Job) => {
@@ -83,6 +86,8 @@
       }}),
     }
   });
+
+  console.log(homepageStore);
 </script>
 
 <div class="chart">
