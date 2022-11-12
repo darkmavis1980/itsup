@@ -1,8 +1,12 @@
+<script lang="ts">
+  import { BASE_URL } from '../config';
+</script>
+
 <sidenav>
   <h1>It's up!</h1>
   <ul>
-    <li><a href="/">Home</a></li>
-    <li><a href="/jobs">Jobs</a></li>
+    <li><a href="{BASE_URL}/">Home</a></li>
+    <li><a href="{BASE_URL}/jobs">Jobs</a></li>
   </ul>
 </sidenav>
 

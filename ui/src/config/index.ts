@@ -1,6 +1,7 @@
 export const DEV = import.meta.env.DEV || false;
 
 export const API_BASEURL = DEV ? 'http://localhost:7879/' : '/';
+export const BASE_URL = '/ui';
 
 console.log(DEV, import.meta.env);
 
