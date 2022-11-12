@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "nodemon server.js",
     "start": "node server.js",
+    "build": "cd ui && npm run build",
     "create:db": "node ./bin/install.js",
     "update:db": "node ./bin/update.js"
   },
