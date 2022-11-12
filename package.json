@@ -1,6 +1,6 @@
 {
   "name": "itsup",
-  "version": "0.8.0-next.5",
+  "version": "0.8.0-next.6",
   "description": "",
   "main": "server.js",
   "scripts": {
