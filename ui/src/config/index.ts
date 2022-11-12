@@ -1,4 +1,6 @@
-export const API_BASEURL = import.meta.env.API_BASEURL || 'http://localhost:7879/';
+export const DEV = import.meta.env.DEV || true;
+
+export const API_BASEURL = DEV ? 'http://localhost:7879/' : '/';
 
 export const chartColors: string[] = [
   // '#cdb4db',
@@ -11,5 +13,3 @@ export const chartColors: string[] = [
   '#75E6DA',
   '#D4F1F4',
 ];
-
-console.log('envs', import.meta.env);
