@@ -1,9 +1,10 @@
 <script lang="ts">
+  export const ssr = false;
   import '../app.css';
   import Nav from '../components/Nav.svelte';
 </script>
 
-<main id="app" data-theme="default">
+<main id="app" data-theme="lime">
   <Nav />
   <div class="content-wrapper">
     <div class="content">

@@ -52,7 +52,7 @@ app.use(API_BASE, jobsRouter);
  * Set static files location
  * used for requests that our frontend will make
  */
-app.use('/ui/', express.static(__dirname + '/ui/dist'));
+app.use('/ui/', express.static(__dirname + '/ui/build/'));
 
 const httpServer = createServer(app);
 
