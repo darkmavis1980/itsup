@@ -31,6 +31,7 @@
           <th>Cron</th>
           <th>Url</th>
           <th>Method</th>
+          <th>Status</th>
         </tr>
       </thead>
       <tbody>
@@ -38,8 +39,9 @@
         <tr>
           <td>{job.name}</td>
           <td>{job.humanCron}</td>
-          <td>{job.url}</td>
+          <td><a href={job.url} target="_blank">{job.url}</a></td>
           <td><Label>{job.method}</Label></td>
+          <td><Label color={job.status === 'active' ? 'green' : 'red'}>{job.status}</Label></td>
         </tr>
       {/each}
       </tbody>

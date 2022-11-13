@@ -76,6 +76,7 @@ const createJob = async (req, res) => {
       cron,
       url,
       method = 'HEAD',
+      status = 'active',
     } = req.body;
 
     // Create job in the DB
@@ -84,6 +85,7 @@ const createJob = async (req, res) => {
       cron,
       url,
       method,
+      status,
     });
 
     const { insertId } = result;
@@ -116,6 +118,7 @@ const updateJob = async (req, res) => {
       cron,
       url,
       method = 'HEAD',
+      status = 'active',
     } = req.body;
 
     const jobExists = await JobsService.getOneByKey(key);
@@ -129,21 +132,28 @@ const updateJob = async (req, res) => {
       cron,
       url,
       method,
+      status,
     });
 
     if (affectedRows === 0) throw new Error('Nothing to update');
     // Replace Job to the cronJob scheduler
-    Jobs.addJob({
-      id,
-      key,
-      cron,
-      url,
-      method,
-    });
+    if (status === 'active') {
+      Jobs.addJob({
+        id,
+        key,
+        cron,
+        url,
+        method,
+      });
+      return res.status(204).end();
+    }
 
-    res.status(204).end();
+    if (status === 'disabled') {
+      Jobs.deleteJob(key);
+      return res.status(204).end();
+    }
   } catch (error) {
-    res.status(400).end();
+    return res.status(400).end();
   }
 };
 

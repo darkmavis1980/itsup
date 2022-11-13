@@ -37,9 +37,13 @@ const create = async ({
   cron,
   url,
   method = 'HEAD',
+  status = 'active',
 }) => {
   try {
-    const sql = `INSERT INTO jobs (name, cron, url, method) VALUES ('${key}', '${cron}', '${url}', '${method}')`;
+    const sql = `INSERT INTO jobs
+      (name, cron, url, method, status)
+      VALUES
+      ('${key}', '${cron}', '${url}', '${method}', '${status}')`;
     const result = await execute(sql);
     return result;
   } catch (error) {
@@ -53,9 +57,15 @@ const update = async ({
   cron,
   url,
   method,
+  status,
 }) => {
   try {
-    const sql = `UPDATE jobs SET cron = '${cron}', url = '${url}', method = '${method}' WHERE id = ${id}`;
+    const sql = `UPDATE jobs
+      SET cron = '${cron}',
+      url = '${url}',
+      method = '${method}'
+      status = '${status}'
+      WHERE id = ${id}`;
     const result = await execute(sql);
     return result;
   } catch (error) {

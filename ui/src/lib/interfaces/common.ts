@@ -1,5 +1,7 @@
 export type HttpMethod = 'GET' | 'POST' | 'HEAD' | 'PATCH' | 'PUT';
 
+export type JobStatus = 'active' | 'disabled';
+
 export interface Job {
   id: number;
   name: string;
@@ -7,6 +9,7 @@ export interface Job {
   url: string;
   humanCron?: string;
   method: HttpMethod;
+  status: JobStatus;
 }
 
 export interface DropdownOptions {
