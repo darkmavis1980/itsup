@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { getContext, onDestroy } from 'svelte';
-  import axios from 'axios';
+  import { onDestroy } from 'svelte';
   import dayjs from 'dayjs'
   import cronstrue from 'cronstrue';
   import type { Job } from '../lib/interfaces/common';
   import { Line } from 'svelte-chartjs'
   import { onMount } from 'svelte';
-  import { API_BASEURL, chartColors } from '../config';
+  import { httpRequest } from '../lib/http';
+  import { chartColors } from '../config';
   import { HexToRGB, RGBArrayToString } from '../lib/colours';
   import { homepageStore } from '../stores/homepageStore';
 
@@ -52,13 +52,13 @@
 
   const fetchData = async () => {
     const { currentFrequency } = $homepageStore;
-    const { data: jobs } = await axios.get(`${API_BASEURL}jobs`);
+    const { data: jobs } = await httpRequest.get('jobs');
     jobsList = jobs.map((item: Job) => {
       item.humanCron = cronstrue.toString(item.cron);
       return item;
     });
 
-    const response: {data: [JobLog]} = await axios.get(`${API_BASEURL}jobs/logs?timeframe=${currentFrequency}`);
+    const response: {data: [JobLog]} = await httpRequest.get(`jobs/logs?timeframe=${currentFrequency}`);
     data = {
       labels: response.data.filter(point => point.jobs_id === jobsList[0].id).map(({created_at}) => dayjs(created_at).format('HH:mm:ss')),
       datasets: jobsList.map((item, index) => {

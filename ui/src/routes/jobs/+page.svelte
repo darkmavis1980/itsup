@@ -32,6 +32,7 @@
           <th>Url</th>
           <th>Method</th>
           <th>Status</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -39,9 +40,18 @@
         <tr>
           <td>{job.name}</td>
           <td>{job.humanCron}</td>
-          <td><a href={job.url} target="_blank">{job.url}</a></td>
-          <td><Label>{job.method}</Label></td>
-          <td><Label color={job.status === 'active' ? 'green' : 'red'}>{job.status}</Label></td>
+          <td>
+            <a href={job.url} target="_blank" rel="noopener">{job.url}</a>
+          </td>
+          <td>
+            <Label>{job.method}</Label>
+          </td>
+          <td>
+            <Label color={job.status === 'active' ? 'green' : 'red'}>{job.status}</Label>
+          </td>
+          <td>
+            <a href={`/ui/jobs/edit/${job.id}`}>Edit</a>
+          </td>
         </tr>
       {/each}
       </tbody>
