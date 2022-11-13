@@ -1,8 +1,6 @@
 <script lang="ts">
-  import { setContext, getContext } from 'svelte';
-  import type { DropdownOptions, StoreHomepage, InputEvent } from '../lib/interfaces/common';
-
-  const homepageStore: StoreHomepage = getContext('homepage');
+  import { homepageStore } from '../stores/homepageStore';
+  import type { DropdownOptions, InputEvent } from '../lib/interfaces/common';
 
   export let selectName: string;
   export let options: DropdownOptions[] = [{
@@ -12,10 +10,10 @@
   }];
 
   const onChange = ({target}: InputEvent) => {
-    setContext('homepage', {
-      ...homepageStore,
-      currentFrency: target.value,
-    })
+    homepageStore.update(store => {
+      store.currentFrequency = target.value;
+      return store;
+    });
   }
 </script>
 

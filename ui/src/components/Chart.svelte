@@ -1,13 +1,14 @@
 <script lang="ts">
-  import { getContext } from 'svelte';
+  import { getContext, onDestroy } from 'svelte';
   import axios from 'axios';
   import dayjs from 'dayjs'
   import cronstrue from 'cronstrue';
   import type { Job } from '../lib/interfaces/common';
-  import { getElementAtEvent, Line } from 'svelte-chartjs'
+  import { Line } from 'svelte-chartjs'
   import { onMount } from 'svelte';
   import { API_BASEURL, chartColors } from '../config';
   import { HexToRGB, RGBArrayToString } from '../lib/colours';
+  import { homepageStore } from '../stores/homepageStore';
 
   interface JobLog {
     created_at: string;
@@ -49,16 +50,15 @@
   let data: ChartData;
   let jobsList: [Job];
 
-  const homepageStore = getContext('homepage');
-
-  onMount(async() => {
+  const fetchData = async () => {
+    const { currentFrequency } = $homepageStore;
     const { data: jobs } = await axios.get(`${API_BASEURL}jobs`);
     jobsList = jobs.map((item: Job) => {
       item.humanCron = cronstrue.toString(item.cron);
       return item;
     });
 
-    const response: {data: [JobLog]} = await axios.get(`${API_BASEURL}jobs/logs?timeframe=3h`);
+    const response: {data: [JobLog]} = await axios.get(`${API_BASEURL}jobs/logs?timeframe=${currentFrequency}`);
     data = {
       labels: response.data.filter(point => point.jobs_id === jobsList[0].id).map(({created_at}) => dayjs(created_at).format('HH:mm:ss')),
       datasets: jobsList.map((item, index) => {
@@ -85,9 +85,18 @@
         data: response.data.filter(point => point.jobs_id === item.id).map(({response_time}) => response_time)
       }}),
     }
+  }
+
+  onMount(async() => {
+    console.log($homepageStore);
+    await fetchData();
   });
 
-  console.log(homepageStore);
+  let unsubscribeHomeStore = homepageStore.subscribe(async (currentValue) => {
+    await fetchData();
+  });
+
+  onDestroy(unsubscribeHomeStore);
 </script>
 
 <div class="chart">

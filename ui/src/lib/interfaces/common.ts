@@ -20,7 +20,7 @@ export interface StoreHomepage {
 }
 
 export interface InputEventTarget {
-  value: string | number;
+  value: string;
 }
 
 export interface InputEvent {
