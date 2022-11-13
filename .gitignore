@@ -1,5 +1,12 @@
+.DS_Store
 node_modules/
 jobs.json
 .data
 .env*
 !.env*.sample
+
+# Svelte
+/ui/build
+/ui/.netlify
+/ui/.svelte-kit
+/ui/.vercel_build_output

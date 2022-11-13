@@ -20,9 +20,19 @@ axios.interceptors.response.use(config => {
 
 class Jobs {
   jobs;
+  ws;
+  wsSocket;
 
   constructor() {
     this.jobs = {}
+  }
+
+  setIO(websocketConnection) {
+    this.ws = websocketConnection;
+  }
+
+  setWebSocket(socket) {
+    this.wsSocket = socket;
   }
 
   /**
@@ -45,6 +55,7 @@ class Jobs {
         results.forEach(({id, name: key, cron, url, method}) => this.addJob({id, key, cron, url, method}));
       }
     } catch (error) {
+      console.log(error.message);
       console.error('Cannot load jobs from DB');
     }
   }
@@ -67,6 +78,14 @@ class Jobs {
         try {
           const {status, meta: { responseTime }} = await axios[method.toLowerCase()](url);
           await this.logJob(id, key, url, status, responseTime);
+          if (this.wsSocket) {
+            this.wsSocket.emit('eventslog', {
+              id,
+              key,
+              status,
+              responseTime
+            });
+          }
           console.log(`key:${key} - Pinged ${url} and got status ${status}, with response time of ${responseTime}ms`);
         } catch (error) {
           if (error?.response?.meta && error?.response?.status) {

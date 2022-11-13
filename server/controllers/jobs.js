@@ -9,26 +9,38 @@ const LogsService = require('../services/logs');
  * @param {express.Request} req Request object
  * @param {express.Response} res Response object
  */
-const getJobsList = async (req, res) => {
-  const {
-    limit = 100,
-    offset = 0,
-  } = req.query;
-  const results = await LogsService.list({limit, offset});
-  res.status(200).json(results).end();
+const getJobsLogs = async (req, res) => {
+  try {
+    const {
+      timeframe = '1d',
+    } = req.query;
+    const results = await LogsService.list({timeframe});
+    res.status(200).json(results).end();
+  } catch (error) {
+    res.status(403).json({message: error.message}).end();
+  }
 };
+
+const getJobs = async (req, res) => {
+  try {
+    const result = await JobsService.list();
+    res.status(200).json(result).end();
+  } catch (error) {
+    res.status(500).json({error: 'Could not load the jobs'}).end();
+  }
+}
 
 /**
  * Get the jobs with latest logs
  * @param {express.Request} req Request object
  * @param {express.Response} res Response object
  */
-const getJobs = async (req, res) => {
+const getJobsStatus = async (req, res) => {
   const keys = await JobsService.list();
   let rowSql;
   const rows = [];
   for(let i = 0; i < keys.length; i++) {
-    rowSql = `SELECT * FROM jobs_logs WHERE process_key = '${keys[i].name}' ORDER BY created_at DESC LIMIT 1;`;
+    rowSql = `SELECT * FROM jobs_logs WHERE jobs_id = '${keys[i].id}' ORDER BY created_at DESC LIMIT 1;`;
     const [row] = await execute(rowSql);
     rows.push(row);
   }
@@ -161,8 +173,9 @@ const deleteJobById = async (req, res) => {
 };
 
 module.exports = {
-  getJobsList,
   getJobs,
+  getJobsLogs,
+  getJobsStatus,
   createJob,
   updateJob,
   getJobById,

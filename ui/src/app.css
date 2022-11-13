@@ -1,0 +1,119 @@
+:root {
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  color-scheme: light dark;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  color: black;
+
+  /* palette https://coolors.co/palette/2b2d42-8d99ae-edf2f4-ef233c-d90429 */
+  --primary-color: #2b2d42;
+  --secondary-color: #8d99ae;
+  --background-color: #edf2f4;
+  --primary-accent: #ef233c;
+  --secondary-accent: #d90429;
+}
+
+[data-theme="dark"] {
+  /* palette https://coolors.co/palette/16697a-489fb5-82c0cc-ede7e3-ffa62b */
+  --primary-color: #16697a;
+  --secondary-color: #489fb5;
+  --background-color: #ede7e3;
+  --primary-accent: #82c0cc;
+  --secondary-accent: #ffa62b;
+}
+
+[data-theme="dark-monochrome"] {
+  /* palette https://coolors.co/palette/22223b-4a4e69-9a8c98-c9ada7-f2e9e4 */
+  --primary-color: #22223b;
+  --secondary-color: #4a4e69;
+  --background-color: #f2e9e4;
+  --primary-accent: #9a8c98;
+  --secondary-accent: #c9ada7;
+}
+
+[data-theme="lime"] {
+  /* palette https://coolors.co/palette/007f5f-2b9348-55a630-80b918-aacc00-bfd200-d4d700-dddf00-eeef20-ffff3f */
+  --primary-color: #007f5f;
+  --secondary-color: #55a630;
+  --background-color: #f2e9e4;
+  --primary-accent: #aacc00;
+  --secondary-accent: #eeef20;
+}
+
+[data-theme="seaside"] {
+  /* palette https://www.canva.com/colors/color-palettes/summer-splash/ */
+  --primary-color: #05445E;
+  --secondary-color: #189AB4;
+  --background-color: #f2e9e4;
+  --primary-accent: #75E6DA;
+  --secondary-accent: #D4F1F4;
+}
+
+a {
+  font-weight: 500;
+  color: var(--primary-accent);
+  text-decoration: inherit;
+}
+
+a:hover {
+  color: var(--secondary-accent);
+}
+
+body {
+  margin: 0;
+  background-color: var(--background-color);
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+#app {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  grid-template-rows: auto;
+  height: 100%;
+}
+
+/* 
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+} */

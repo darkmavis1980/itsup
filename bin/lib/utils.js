@@ -1,6 +1,6 @@
 const fs = require('fs/promises');
 const path = require('path');
-const { execute } = require('../../lib/db');
+const { execute } = require('../../server/lib/db');
 const { MIGRATIONS_FOLDER } = require('../config');
 
 /**

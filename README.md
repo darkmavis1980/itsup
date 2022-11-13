@@ -108,9 +108,9 @@ npm run update:db
 
 `GET /jobs/status` - Get the list of all the jobs with the most recent status
 
-### Get list of all jobs
+### Get logs of all jobs
 
-`GET /jobs/list` - Get the list of all the records for all jobs
+`GET /jobs/logs` - Get the list of all the records for all jobs
 
 **Params:**
 
@@ -181,3 +181,4 @@ Example:
 ## Resources
 
 - [Build a REST API with Node.js, Express, and MySQL](https://blog.logrocket.com/build-rest-api-node-express-mysql/)
+- [NodeJS and closing your MySQL connections — a study](https://blog.devgenius.io/nodejs-how-to-close-your-mysql-connections-and-why-a7cc7287132b)
