@@ -29,6 +29,10 @@ export const FREQUENCY_OPTIONS: DropdownOptions[] = [
     label: '12 hours',
   },
   {
+    value: '6h',
+    label: '6 hours',
+  },
+  {
     value: '3h',
     label: '3 hours',
     selected: true,
@@ -36,5 +40,9 @@ export const FREQUENCY_OPTIONS: DropdownOptions[] = [
   {
     value: '1h',
     label: '1 hour',
+  },
+  {
+    value: '30m',
+    label: '30 minutes',
   },
 ];

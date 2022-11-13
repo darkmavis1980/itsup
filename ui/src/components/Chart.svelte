@@ -47,7 +47,7 @@
     CategoryScale
   );
 
-  let data: ChartData;
+  let data: ChartData | undefined;
   let jobsList: [Job];
 
   const fetchData = async () => {
@@ -92,7 +92,8 @@
     await fetchData();
   });
 
-  let unsubscribeHomeStore = homepageStore.subscribe(async (currentValue) => {
+  let unsubscribeHomeStore = homepageStore.subscribe(async () => {
+    data = undefined;
     await fetchData();
   });
 
