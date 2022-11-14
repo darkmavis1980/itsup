@@ -46,3 +46,5 @@ export const FREQUENCY_OPTIONS: DropdownOptions[] = [
     label: '30 minutes',
   },
 ];
+
+export const HTTP_METHODS = ['POST', 'GET', 'HEAD', 'PATCH', 'PUT'];
