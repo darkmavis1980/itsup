@@ -60,7 +60,8 @@ const httpServer = createServer(app);
  * Websockets
  */
 const io = new Server(httpServer, {
-  // path: '/ws',
+  origins: '*',
+  // path: '/ws/'
 });
 
 Jobs.setIO(io);

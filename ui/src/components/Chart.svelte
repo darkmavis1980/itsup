@@ -1,14 +1,18 @@
 <script lang="ts">
+  import io from 'socket.io-client';
   import { onDestroy } from 'svelte';
   import dayjs from 'dayjs'
   import cronstrue from 'cronstrue';
-  import type { Job } from '../lib/interfaces/common';
   import { Line } from 'svelte-chartjs'
   import { onMount } from 'svelte';
+  import type { Job } from '../lib/interfaces/common';
   import { httpRequest } from '../lib/http';
-  import { chartColors } from '../config';
+  import { chartColors, API_BASEURL } from '../config';
   import { HexToRGB, RGBArrayToString } from '../lib/colours';
   import { homepageStore } from '../stores/homepageStore';
+
+  const wsUrl = API_BASEURL.replace('http', 'ws')
+  const socket = io(`${wsUrl}`);
 
   interface JobLog {
     created_at: string;
@@ -88,6 +92,12 @@
   }
 
   onMount(async() => {
+    data = undefined;
+    await fetchData();
+  });
+
+  socket.on('eventslog', async (data) => {
+    console.log(data);
     data = undefined;
     await fetchData();
   });
