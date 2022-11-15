@@ -2,7 +2,7 @@
   import type { DropdownOptions } from '../lib/interfaces/common';
 
   export let selectName: string;
-  export let onChange: Function;
+  export let onChange = (e: any) => {};
   export let options: DropdownOptions[] = [{
     label: 'Select an option',
     value: '',

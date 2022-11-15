@@ -11,8 +11,9 @@
 <style>
   .field {
     width: 100%;
-    max-width: 400px;
+    max-width: 600px;
     display: block;
+    margin-bottom: 1rem;
   }
 
   .field label {

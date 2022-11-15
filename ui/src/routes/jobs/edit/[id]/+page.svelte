@@ -3,6 +3,7 @@
   import { httpRequest } from '$lib/http';
   import Dropdown from '../../../../components/Dropdown.svelte';
   import Field from '../../../../components/Field.svelte';
+  import { HTTP_METHODS } from '../../../../config';
 
   export let data: PageData;
 
@@ -28,8 +29,10 @@
     }
   ];
 
-  const onChangeStatus = (event) => {
-    data.status = event.target.value;
+  const methodOptions = HTTP_METHODS.map(method => ({label: method, value: method, selected: data.method === method}));
+
+  const onChangeSelect = (event: any) => {
+    data[event.target.name] = event.target.value;
   };
 </script>
 
@@ -46,8 +49,14 @@
     <Field label="Url" name="url">
       <input type="text" name="url" id="url" bind:value={data.url} />
     </Field>
+    <Field label="Cronjob" name="cron">
+      <input type="text" name="cron" id="cron" bind:value={data.cron} />
+    </Field>
     <Field label="Status" name="status">
-      <Dropdown onChange={onChangeStatus} options={statusOptions} selectName="status" />
+      <Dropdown onChange={onChangeSelect} options={statusOptions} selectName="status" />
+    </Field>
+    <Field label="Method" name="method">
+      <Dropdown onChange={onChangeSelect} options={methodOptions} selectName="method" />
     </Field>
     <button type="submit">Send</button>
   </form>
