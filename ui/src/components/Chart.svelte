@@ -88,7 +88,7 @@
   }
 
   onMount(async() => {
-    console.log($homepageStore);
+    data = undefined;
     await fetchData();
   });
 
