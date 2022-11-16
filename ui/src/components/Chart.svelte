@@ -107,7 +107,10 @@
     await fetchData();
   });
 
-  onDestroy(unsubscribeHomeStore);
+  onDestroy(() => {
+    data = undefined;
+    unsubscribeHomeStore();
+  });
 </script>
 
 <div class="chart">
