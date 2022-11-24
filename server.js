@@ -60,7 +60,9 @@ const httpServer = createServer(app);
  * Websockets
  */
 const io = new Server(httpServer, {
-  origins: '*',
+  cors: {
+    origins: '*',
+  },
   // path: '/ws/'
 });
 
